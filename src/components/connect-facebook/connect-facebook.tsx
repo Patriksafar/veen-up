@@ -1,19 +1,24 @@
-import FacebookLogin from 'react-facebook-login'
-import React from 'react'
-import { useStore } from '../store'
+import FacebookLogin from "react-facebook-login";
 
+import React from "react";
+import { useStore } from "../store";
+import { RouteComponentProps, navigate } from "@reach/router";
+import { Button } from "../button";
+import { routes } from "../../config";
 
-export const ConnectFacebook = () => {
+type Props = RouteComponentProps;
+
+export const ConnectFacebook = ({}: Props) => {
   const { fbUserData, setFbUserData } = useStore();
 
   if (fbUserData.isLoggedIn) {
-    return null;
+    navigate(routes.list, { replace: true });
   }
 
   const responseFacebook = (response: any) => {
-    const {
-      name, email, picture, userID, accessToken,
-    } = response;
+    console.log(response);
+
+    const { name, email, picture, userID, accessToken } = response;
     if (userID) {
       setFbUserData({
         isLoggedIn: true,
@@ -21,8 +26,9 @@ export const ConnectFacebook = () => {
         name,
         email,
         picture: picture.data.url,
-        token: accessToken,
+        token: accessToken
       });
+      navigate(routes.list);
     }
   };
 
@@ -30,7 +36,6 @@ export const ConnectFacebook = () => {
   return (
     <FacebookLogin
       appId="1699457083617896"
-      autoLoad={false}
       fields="name,email,picture"
       scope="public_profile,email,user_birthday,manage_pages,publish_pages,pages_show_list,read_insights,pages_messaging"
       returnScopes

@@ -1,0 +1,16 @@
+{
+  "files.associations": {
+    "*.django-template.html": "django-html"
+  },
+  "emmet.includeLanguages": { "django-html": "html" },
+  "editor.formatOnSave": true,
+  "stylelint.enable": true,
+  "eslint.enable": true,
+  "eslint.options": {
+    "ignorePath": ".gitignore"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
