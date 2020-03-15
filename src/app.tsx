@@ -1,12 +1,5 @@
 import React from "react";
-import Container from "@material-ui/core/Container";
-import {
-  StoreProvider,
-  ConnectFacebook,
-  FacebookPageList,
-  Button,
-  SideMenu
-} from "./components";
+import { StoreProvider, ConnectFacebook, FacebookPageList } from "./components";
 
 import { routes } from "./config/routes";
 import { Router } from "@reach/router";
