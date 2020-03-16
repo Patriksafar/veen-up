@@ -4,16 +4,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const productRoutes = require("./api/routes/products");
 const signupRoutes = require("./api/routes/signup");
+const { mongoConntect } = require("./config");
 
 const app = express();
-// connect mongoDBAttlass
-mongoose.connect(
-  `mongodb+srv://admin:Mr.panda123@cluster0-u47iv.mongodb.net/test?retryWrites=true&w=majority`,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  }
-);
+
+mongoose.connect(mongoConntect, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 // loggign response status to console
 app.use(morgan("dev"));
