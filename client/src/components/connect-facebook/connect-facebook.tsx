@@ -6,6 +6,9 @@ import { RouteComponentProps, navigate } from "@reach/router";
 import { Button } from "../button";
 import { routes } from "../../config";
 
+import * as buttonClasses from "../button/button.style";
+import { cx } from "emotion";
+
 type Props = RouteComponentProps;
 
 export const ConnectFacebook = ({}: Props) => {
@@ -40,6 +43,7 @@ export const ConnectFacebook = ({}: Props) => {
       scope="public_profile,email,user_birthday,manage_pages,publish_pages,pages_show_list,read_insights,pages_messaging"
       returnScopes
       callback={responseFacebook}
+      cssClass={cx(buttonClasses.root, buttonClasses.primaryContained)}
     />
   );
 };

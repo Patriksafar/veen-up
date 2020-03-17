@@ -8,6 +8,8 @@ const { mongoConntect } = require("./config");
 
 const app = express();
 
+console.log(mongoConntect);
+
 mongoose.connect(mongoConntect, {
   useNewUrlParser: true,
   useUnifiedTopology: true
