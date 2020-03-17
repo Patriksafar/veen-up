@@ -3,7 +3,8 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
 const productRoutes = require("./api/routes/products");
-const signupRoutes = require("./api/routes/signup");
+const userRoutes = require("./api/routes/user");
+
 const { mongoConntect } = require("./config");
 
 const app = express();
@@ -39,7 +40,7 @@ app.use((req, res, next) => {
 
 // route - endpoints definitions singup/signin and so on
 app.use("/products", productRoutes);
-app.use("/signup", signupRoutes);
+app.use("/user", userRoutes);
 
 // error handaling of requests
 app.use((req, res, next) => {
