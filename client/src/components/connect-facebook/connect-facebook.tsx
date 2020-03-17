@@ -42,6 +42,7 @@ export const ConnectFacebook = ({}: Props) => {
       fields="name,email,picture"
       scope="public_profile,email,user_birthday,manage_pages,publish_pages,pages_show_list,read_insights,pages_messaging"
       returnScopes
+      textButton="Facebook"
       callback={responseFacebook}
       cssClass={cx(buttonClasses.root, buttonClasses.primaryContained)}
     />
