@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 const User = require("../models/user");
@@ -11,8 +12,8 @@ router.post("/signup/", (req, res) => {
   // check if email already is registered
   User.find({ email: req.body.email })
     .exec()
-    .then(userResponse => {
-      if (userResponse.length > 0) {
+    .then(users => {
+      if (users.length >= 1) {
         return res.status(409).json({
           error: {
             message: "User with this email already exists"
@@ -48,6 +49,48 @@ router.post("/signup/", (req, res) => {
             console.log(error);
             res.status(500).json({ error });
           });
+      });
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({ error });
+    });
+});
+
+router.post("/login", (req, res) => {
+  User.find({ email: req.body.email })
+    .exec()
+    .then(users => {
+      if (users.length > 1) {
+        return res.status(401).json({
+          message: "Auth failed"
+        });
+      }
+      bcrypt.compare(req.body.password, users[0].password, (err, result) => {
+        if (err) {
+          return res.status(401).json({
+            message: "Auth failed"
+          });
+        }
+
+        if (result) {
+          const token = jwt.sign(
+            // eslint-disable-next-line no-underscore-dangle
+            { email: users[0].email, id: users[0]._id },
+            process.env.JWT_KEY,
+            {
+              expiresIn: "1h"
+            }
+          );
+          return res.status(201).json({
+            message: "Auth successful",
+            token
+          });
+        }
+
+        res.status(401).json({
+          message: "Auth failed"
+        });
       });
     })
     .catch(error => {

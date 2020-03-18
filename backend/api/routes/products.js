@@ -1,10 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Products = require("../models/products");
+const checkAuth = require("../middleware/check-auth");
 
 const router = express.Router();
 
-router.get("/", (request, response) => {
+router.get("/", checkAuth, (request, response) => {
   Products.find()
     .exec()
     .then(docs => {
