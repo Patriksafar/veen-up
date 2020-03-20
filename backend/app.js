@@ -5,13 +5,11 @@ const mongoose = require("mongoose");
 const productRoutes = require("./api/routes/products");
 const userRoutes = require("./api/routes/user");
 
-const { mongoConntect } = require("./config");
+const { mongoConnect } = require("./config");
 
 const app = express();
 
-console.log(mongoConntect);
-
-mongoose.connect(mongoConntect, {
+mongoose.connect(mongoConnect, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
