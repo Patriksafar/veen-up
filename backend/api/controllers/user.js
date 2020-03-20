@@ -42,7 +42,9 @@ exports.userLogin = (req, res) => {
     })
     .catch(error => {
       console.log(error);
-      res.status(500).json({ error });
+      res.status(401).json({
+        message: "Auth failed"
+      });
     });
 };
 

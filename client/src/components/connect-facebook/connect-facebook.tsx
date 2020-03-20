@@ -2,7 +2,7 @@ import FacebookLogin from "react-facebook-login";
 
 import React from "react";
 import { useStore } from "../store";
-import { RouteComponentProps, navigate } from "@reach/router";
+import { RouteComponentProps, navigate, Redirect } from "@reach/router";
 import { Button } from "../button";
 import { routes } from "../../config";
 
@@ -12,7 +12,11 @@ import { cx } from "emotion";
 type Props = RouteComponentProps;
 
 export const ConnectFacebook = ({}: Props) => {
-  const { fbUserData, setFbUserData } = useStore();
+  const { fbUserData, setFbUserData, veenupToken } = useStore();
+
+  if (!veenupToken) {
+    return <Redirect noThrow to={routes.signup} />;
+  }
 
   if (fbUserData.isLoggedIn) {
     navigate(routes.list, { replace: true });

@@ -1,9 +1,9 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, ButtonHTMLAttributes } from "react";
 
 import * as classes from "./button.style";
 import { cx } from "emotion";
 
-type Props = {
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   onClick?: () => void;
   children: string | ReactElement;
   color?: "primary" | "secondary";
@@ -14,7 +14,8 @@ export const Button = ({
   onClick,
   children,
   color = "primary",
-  variant = "contained"
+  variant = "contained",
+  ...other
 }: Props) => {
   const buttonClasses = cx(classes.root, {
     [classes.primaryContained]: color === "primary" && variant === "contained",
@@ -23,7 +24,7 @@ export const Button = ({
   });
 
   return (
-    <button onClick={onClick} className={buttonClasses}>
+    <button onClick={onClick} className={buttonClasses} {...other}>
       {children}
     </button>
   );

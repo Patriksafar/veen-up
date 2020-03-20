@@ -1,4 +1,5 @@
 export const routes = {
-  index: "/",
+  signup: "/signup/",
+  addFacebook: "/add-facebook/",
   list: "/account-list/"
 };

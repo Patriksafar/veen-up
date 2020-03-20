@@ -14,9 +14,14 @@ type Props = RouteComponentProps;
 
 export const FacebookPageList = ({}: Props) => {
   const { listOfPages, setListOfPages, fbUserData } = useStore();
+  const { veenupToken } = useStore();
+
+  if (!veenupToken) {
+    return <Redirect to={routes.signup} noThrow />;
+  }
 
   if (!fbUserData.isLoggedIn) {
-    return <Redirect to={routes.index} noThrow />;
+    return <Redirect to={routes.addFacebook} noThrow />;
   }
 
   const handleAddPost = (id: string, token: string) => {
