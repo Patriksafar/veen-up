@@ -56,6 +56,7 @@ exports.userSignUp = (req, res) => {
       if (users.length >= 1) {
         return res.status(409).json({
           error: {
+            field: "email",
             message: "User with this email already exists"
           }
         });
@@ -80,20 +81,39 @@ exports.userSignUp = (req, res) => {
         user
           .save()
           .then(result => {
-            console.log(result);
-            res.status(201).json({
-              message: "User created"
-            });
+            if (result) {
+              const token = jwt.sign(
+                // eslint-disable-next-line no-underscore-dangle
+                { email: user.email, id: user._id },
+                process.env.JWT_KEY,
+                {
+                  expiresIn: "1h"
+                }
+              );
+              return res.status(201).json({
+                message: "User created successful",
+                token
+              });
+            }
           })
           .catch(error => {
             console.log(error);
-            res.status(500).json({ error });
+            res.status(500).json({
+              error: {
+                message: "Ooops something went wrong"
+              }
+            });
           });
       });
     })
     .catch(error => {
       console.log(error);
-      res.status(500).json({ error });
+      res.status(500).json({
+        error: {
+          field: "email",
+          message: "This email is already registered"
+        }
+      });
     });
 };
 

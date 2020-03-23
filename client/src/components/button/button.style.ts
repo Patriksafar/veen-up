@@ -8,6 +8,7 @@ export const root = css`
   background: transparent;
   border: none;
   cursor: pointer;
+  text-decoration: none;
 `;
 
 export const primaryContained = css`
@@ -18,4 +19,21 @@ export const primaryContained = css`
 export const secondaryContained = css`
   color: white;
   background: ${theme.gradients.secondary};
+`;
+
+export const smallerPadding = css`
+  padding: 12px 16px;
+`;
+
+export const transparentContained = css`
+  color: ${theme.text.main};
+  outline: none;
+
+  &:hover {
+    background: #f3f3f3;
+  }
+
+  &:active {
+    background: #dedede;
+  }
 `;

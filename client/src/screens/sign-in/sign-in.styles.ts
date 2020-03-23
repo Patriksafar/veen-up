@@ -10,3 +10,12 @@ export const singupPaper = css`
 export const formGroup = css`
   margin-bottom: 20px;
 `;
+
+export const signupButtons = css`
+  align-items: center;
+`;
+
+export const buttonSeparator = css`
+  margin-left: 12px;
+  margin-right: 8px;
+`;

@@ -1,5 +1,6 @@
 export const routes = {
-  signup: "/signup/",
+  signUp: "/sign-up/",
+  signIn: "/sign-in/",
   addFacebook: "/add-facebook/",
   list: "/account-list/"
 };

@@ -17,7 +17,7 @@ export const FacebookPageList = ({}: Props) => {
   const { veenupToken } = useStore();
 
   if (!veenupToken) {
-    return <Redirect to={routes.signup} noThrow />;
+    return <Redirect to={routes.signIn} noThrow />;
   }
 
   if (!fbUserData.isLoggedIn) {

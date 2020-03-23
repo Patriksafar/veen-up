@@ -15,15 +15,15 @@ import {
   Grid
 } from "@material-ui/core";
 
-import * as classes from "./singup.styles";
+import * as classes from "./sign-in.styles";
 import { Layout } from "../../components/layout";
-import { Button, useStore } from "../../components";
+import { Button, useStore, Link } from "../../components";
 
 import { routes } from "../../config";
 
 type Props = RouteComponentProps;
 
-export const SignUp = ({}: Props) => {
+export const SignIn = ({}: Props) => {
   const { veenupToken, setVeenupToken } = useStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,8 +31,6 @@ export const SignUp = ({}: Props) => {
   const [submitted, setSubmitted] = useState(false);
 
   const [error, setError] = useState("");
-
-  console.log(veenupToken);
 
   if (veenupToken) {
     return <Redirect to={routes.addFacebook} noThrow />;
@@ -87,6 +85,7 @@ export const SignUp = ({}: Props) => {
     <Layout>
       <div className={classes.singupPaper}>
         <Paper background="white">
+          <Typography variant="h6">Sign In</Typography>
           <Grid>
             <form onSubmit={handleSubmit}>
               {error && (
@@ -128,9 +127,19 @@ export const SignUp = ({}: Props) => {
                   />
                 </FormControl>
               </FormGroup>
-              <Button disabled={loading} onClick={handleSubmit} type="submit">
-                Sing in
-              </Button>
+              <FormGroup row classes={{ root: classes.signupButtons }}>
+                <Button
+                  disabled={loading}
+                  onClick={handleSubmit}
+                  type="submit"
+                  color="primary"
+                  smallerPadding
+                >
+                  Sing in to enter Veenup
+                </Button>
+                <span className={classes.buttonSeparator}>or</span>
+                <Link to={routes.signUp}>sign up</Link>
+              </FormGroup>
             </form>
           </Grid>
         </Paper>
