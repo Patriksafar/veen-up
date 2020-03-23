@@ -36,7 +36,7 @@ export const SignUp = ({}: Props) => {
   const [error, setError] = useState<ErrorProps | null>(null);
 
   if (veenupToken) {
-    return <Redirect to={routes.addFacebook} noThrow />;
+    return <Redirect to={routes.dashboard} noThrow />;
   }
 
   const postData = async (url = "", data = {}) => {
@@ -87,7 +87,7 @@ export const SignUp = ({}: Props) => {
   };
 
   return (
-    <Layout>
+    <Layout color="contained">
       <div className={classes.singupPaper}>
         <Paper background="white">
           <Typography variant="h6">Sign Up to VeenUp</Typography>

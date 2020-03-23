@@ -20,46 +20,42 @@ type API = {
   setFbUserData: (s: FacebookUserStateProps) => void;
   listOfPages: any;
   setListOfPages: (s: any) => void;
-  veenupToken: string;
+  veenupToken: string | null;
   setVeenupToken: (s: string) => void;
 };
 
 export const StoreContext = createContext<API | null>(null);
 
-function getCookie(name: string) {
-  var dc = document.cookie;
-  var prefix = name + "=";
-  var begin = dc.indexOf("; " + prefix);
-  let end;
+// const getCookie = (cname: string) => {
+//   var name = cname + "=";
+//   var decodedCookie = decodeURIComponent(document.cookie);
+//   var ca = decodedCookie.split(";");
+//   for (var i = 0; i < ca.length; i++) {
+//     var c = ca[i];
+//     while (c.charAt(0) == " ") {
+//       c = c.substring(1);
+//     }
+//     if (c.indexOf(name) == 0) {
+//       return c.substring(name.length, c.length);
+//     }
+//   }
+//   return "";
+// };
 
-  if (begin == -1) {
-    begin = dc.indexOf(prefix);
-    if (begin != 0) return null;
-  } else {
-    begin += 2;
-    end = document.cookie.indexOf(";", begin);
-    if (end == -1) {
-      end = dc.length;
-    }
-  }
-
-  // because unescape has been deprecated, replaced with decodeURI
-  //return unescape(dc.substring(begin + prefix.length, end));
-  return decodeURI(dc.substring(begin + prefix.length, end));
-}
+const cookies = new Cookies();
 
 export const StoreProvider = ({ children }: Props) => {
-  const defaultToken = getCookie("token") || "";
-
   const [fbUserData, setFbUserData] = useState<FacebookUserStateProps>({
     isLoggedIn: false
   });
   const [listOfPages, setListOfPages] = useState(null);
-  const [veenupToken, setVeenupToken] = useState(defaultToken);
+  const [veenupToken, setVeenupToken] = useState<string | null>(
+    cookies.get("token")
+  );
 
   useEffect(() => {
-    if (!getCookie("token") && veenupToken) {
-      document.cookie = `token=${veenupToken}`;
+    if (!cookies.get("token") && veenupToken) {
+      cookies.set("token", veenupToken, { path: "/" });
     }
   }, [veenupToken]);
 

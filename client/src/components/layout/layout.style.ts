@@ -5,3 +5,7 @@ export const root = css`
   align-items: flex-start;
   min-height: 100vh;
 `;
+
+export const blackBackground = css`
+  background: #333361;
+`;
