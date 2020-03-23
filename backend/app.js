@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const productRoutes = require("./api/routes/products");
 const userRoutes = require("./api/routes/user");
+const connectedAccountsRoutes = require("./api/routes/user-social-accounts");
 
 const { mongoConnect } = require("./config");
 
@@ -39,6 +40,7 @@ app.use((req, res, next) => {
 // route - endpoints definitions singup/signin and so on
 app.use("/products", productRoutes);
 app.use("/user", userRoutes);
+app.use("/connected-accounts", connectedAccountsRoutes);
 
 // error handaling of requests
 app.use((req, res, next) => {
