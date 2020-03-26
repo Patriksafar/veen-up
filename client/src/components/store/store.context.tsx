@@ -1,6 +1,7 @@
 import React, { createContext, useState, ReactNode, useEffect } from "react";
 
 import Cookies from "universal-cookie";
+import { parseJwt } from "../../utils";
 
 type FacebookUserStateProps = {
   isLoggedIn: boolean;
@@ -22,6 +23,7 @@ type API = {
   setListOfPages: (s: any) => void;
   veenupToken: string | null;
   setVeenupToken: (s: string) => void;
+  userId: string
 };
 
 export const StoreContext = createContext<API | null>(null);
@@ -43,13 +45,16 @@ export const StoreProvider = ({ children }: Props) => {
     }
   }, [veenupToken]);
 
+  const userId = veenupToken && parseJwt(veenupToken).id
+
   const api: API = {
     fbUserData,
     setFbUserData,
     listOfPages,
     setListOfPages,
     veenupToken,
-    setVeenupToken
+    setVeenupToken,
+    userId
   };
 
   return <StoreContext.Provider value={api}>{children}</StoreContext.Provider>;

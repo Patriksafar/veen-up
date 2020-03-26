@@ -28,6 +28,8 @@ exports.createUserSocialAccounts = (request, response) => {
     googleAccount: google
   });
 
+  console.log(socialAccounts)
+
   socialAccounts
     .save()
     .then(result => {

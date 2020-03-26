@@ -43,7 +43,7 @@ export const LinkBox = ({ to, title, subtitle, xsWidth = 4, icon }: Props) => {
                 )}
               </Grid>
             </Grid>
-            <Grid item xs={1} alignContent="flex-end">
+            <Grid item xs={1}>
               <KeyboardArrowRight color="action" />
             </Grid>
           </Grid>
