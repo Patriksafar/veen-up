@@ -33,7 +33,7 @@ export const LinkBox = ({ to, title, subtitle, xsWidth = 4, icon }: Props) => {
             <Grid container spacing={1} item xs={11}>
               {icon && <Grid item>{iconsMapped[icon]}</Grid>}
               <Grid item>
-                <Typography variant="body2" color="textSecondary">
+                <Typography variant="body2" color="textPrimary">
                   {title}
                 </Typography>
                 {subtitle && (

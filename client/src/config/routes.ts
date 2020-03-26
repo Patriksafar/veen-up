@@ -3,5 +3,6 @@ export const routes = {
   signIn: "/sign-in/",
   dashboard: "/dashboard/",
   addFacebook: "/add-facebook/",
-  list: "/account-list/"
+  list: "/account-list/",
+  manageAccounts: "/manage-accounts/"
 };

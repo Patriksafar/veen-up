@@ -3,17 +3,38 @@ const mongoose = require("mongoose");
 const userSocialAccounts = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   userId: String,
-  facebookUserToken: {
-    type: String,
-    require: false
+  facebookAccount: {
+    token: {
+      type: String,
+    },
+    name: {
+      type: String,
+    },
+    email: {
+      type: String,
+    }
   },
-  instagramUserToken: {
-    type: String,
-    require: false
+  instagramAccount: {
+    token: {
+      type: String,
+    },
+    name: {
+      type: String,
+    },
+    email: {
+      type: String,
+    }
   },
-  googleUserToken: {
-    type: String,
-    require: false
+  googleAccount: {
+    token: {
+      type: String,
+    },
+    name: {
+      type: String,
+    },
+    email: {
+      type: String,
+    }
   }
 });
 

@@ -12,6 +12,7 @@ import { SignIn } from "./screens/sign-in";
 import { SignUp } from "./screens/sign-up";
 
 import { Dashboard } from "./screens/dashboard";
+import { ManageSocialMedia } from "./screens/manage-social-accounts";
 
 export const App = () => {
   return (
@@ -21,6 +22,7 @@ export const App = () => {
         <SignIn path={routes.signIn} />
         <LayoutApp default>
           <Dashboard path={routes.dashboard} />
+          <ManageSocialMedia path={routes.manageAccounts} />
           <ConnectFacebook path={routes.addFacebook} />
           <FacebookPageList path={routes.list} />
         </LayoutApp>

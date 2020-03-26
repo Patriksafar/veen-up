@@ -13,7 +13,7 @@ import {
 import { LinkBox } from "../../components/link-box";
 import { Layout } from "../../components/layout";
 type Props = RouteComponentProps;
-export const Dashboard = ({}: Props) => {
+export const Dashboard = ({ }: Props) => {
   const { veenupToken } = useStore();
   if (!veenupToken) {
     return <Redirect to={routes.signIn} noThrow />;
@@ -23,19 +23,19 @@ export const Dashboard = ({}: Props) => {
     <Container>
       <Grid container spacing={2}>
         <LinkBox
-          to={routes.addFacebook}
+          to={routes.manageAccounts}
           title="Manage your Facebook"
           subtitle="Connect you Facebook account"
           icon="Facebook"
         />
         <LinkBox
-          to={routes.addFacebook}
+          to={routes.manageAccounts}
           title="Manage your Instagram"
           subtitle="Connect you Instagram account"
           icon="Instagram"
         />
         <LinkBox
-          to={routes.addFacebook}
+          to={routes.manageAccounts}
           title="Manage your Twitter"
           subtitle="@MaybeJeZBrna"
           icon="Twitter"

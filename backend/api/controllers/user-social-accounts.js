@@ -2,13 +2,32 @@ const mongoose = require("mongoose");
 const UserSocialAccounts = require("../models/user-social-accounts");
 
 exports.createUserSocialAccounts = (request, response) => {
+  const google = request.body.google ? {
+    token: request.body.google.token,
+    name: request.body.google.name,
+    email: request.body.google.email,
+  } : {}
+
+  const instagram = request.body.instagram ? {
+    token: request.body.instagram.token,
+    name: request.body.instagram.name,
+    email: request.body.instagram.email,
+  } : {}
+
+  const facebook = request.body.facebook ? {
+    token: request.body.facebook.token,
+    name: request.body.facebook.name,
+    email: request.body.facebook.email
+  } : {}
+
   const socialAccounts = new UserSocialAccounts({
     _id: new mongoose.Types.ObjectId(),
     userId: request.body.userId,
-    facebookUserToken: request.body.facebookUserToken,
-    googleUserToken: request.body.googleUserToken,
-    instagramUserToken: request.body.instagramUserToken
+    facebookAccount: facebook,
+    instagramAccount: instagram,
+    googleAccount: google
   });
+
   socialAccounts
     .save()
     .then(result => {
