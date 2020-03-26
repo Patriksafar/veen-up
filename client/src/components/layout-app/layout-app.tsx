@@ -25,11 +25,13 @@ type Props = {
 const cookies = new Cookies();
 export const LayoutApp = ({ children }: Props) => {
   const { setVeenupToken } = useStore();
+
+  // logout from app
   const handleLogOut = () => {
     cookies.remove("token");
     setVeenupToken("");
 
-    return <Redirect to={routes.signIn} replace noThrow />;
+    navigate(routes.signIn)
   };
 
   return (
