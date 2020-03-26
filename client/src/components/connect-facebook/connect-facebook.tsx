@@ -9,6 +9,7 @@ import { routes } from "../../config";
 import * as buttonClasses from "../button/button.style";
 import { cx } from "emotion";
 import { parseJwt } from "../../utils";
+import { Container } from "@material-ui/core";
 
 type Props = RouteComponentProps;
 
@@ -44,14 +45,16 @@ export const ConnectFacebook = ({}: Props) => {
 
   // eslint-disable-next-line consistent-return
   return (
-    <FacebookLogin
-      appId="1699457083617896"
-      fields="name,email,picture"
-      scope="public_profile,email,user_birthday,manage_pages,publish_pages,pages_show_list,read_insights,pages_messaging"
-      returnScopes
-      textButton="Facebook"
-      callback={responseFacebook}
-      cssClass={cx(buttonClasses.root, buttonClasses.primaryContained)}
-    />
+    <Container>
+      <FacebookLogin
+        appId="1699457083617896"
+        fields="name,email,picture"
+        scope="public_profile,email,user_birthday,manage_pages,publish_pages,pages_show_list,read_insights,pages_messaging"
+        returnScopes
+        textButton="Facebook"
+        callback={responseFacebook}
+        cssClass={cx(buttonClasses.root, buttonClasses.primaryContained)}
+      />
+    </Container>
   );
 };

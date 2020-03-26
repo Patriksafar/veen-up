@@ -10,3 +10,7 @@ export const root = css`
 export const whiteBg = css`
   background: #ffffff;
 `;
+
+export const smallerPadding = css`
+  padding: 16px 12px;
+`;

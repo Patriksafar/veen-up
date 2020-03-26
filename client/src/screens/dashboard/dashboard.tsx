@@ -4,7 +4,14 @@ import { useStore } from "../../components";
 import { Redirect, RouteComponentProps } from "@reach/router";
 import { routes } from "../../config";
 import { Paper } from "../../components/paper";
-
+import {
+  Facebook as FacebookIcon,
+  Twitter as TwitterIcon,
+  Instagram as InstagramIcon,
+  KeyboardArrowRight
+} from "@material-ui/icons";
+import { LinkBox } from "../../components/link-box";
+import { Layout } from "../../components/layout";
 type Props = RouteComponentProps;
 export const Dashboard = ({}: Props) => {
   const { veenupToken } = useStore();
@@ -14,16 +21,25 @@ export const Dashboard = ({}: Props) => {
 
   return (
     <Container>
-      <Typography variant="h3">Dashboard</Typography>
       <Grid container spacing={2}>
-        <Grid item xs={4}>
-          <Paper>Add facebook</Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <Paper>
-            <Card>Add facebook</Card>
-          </Paper>
-        </Grid>
+        <LinkBox
+          to={routes.addFacebook}
+          title="Manage your Facebook"
+          subtitle="Connect you Facebook account"
+          icon="Facebook"
+        />
+        <LinkBox
+          to={routes.addFacebook}
+          title="Manage your Instagram"
+          subtitle="Connect you Instagram account"
+          icon="Instagram"
+        />
+        <LinkBox
+          to={routes.addFacebook}
+          title="Manage your Twitter"
+          subtitle="@MaybeJeZBrna"
+          icon="Twitter"
+        />
       </Grid>
     </Container>
   );

@@ -1,14 +1,12 @@
 import React from "react";
 import { useStore } from "../store";
-import { RouteComponentProps, navigate, Redirect } from "@reach/router";
+import { RouteComponentProps, Redirect } from "@reach/router";
 import { Button } from "../button";
 import { Avatar } from "../avatar";
 import { Box } from "../box";
 import { routes } from "../../config";
-import { SideMenu } from "..";
-import { Layout } from "../layout";
-import { Container } from "../container";
 import { Paper } from "../paper";
+import { Container } from "@material-ui/core";
 
 type Props = RouteComponentProps;
 
@@ -57,50 +55,37 @@ export const FacebookPageList = ({}: Props) => {
   };
 
   return (
-    <Layout>
-      <SideMenu
-        endAdornment={
-          fbUserData.picture && (
-            <Avatar src={fbUserData.picture} alt={fbUserData.name} />
-          )
-        }
-      ></SideMenu>
-      <Container sidebarOffset variant="wide" noPadding>
-        <Container variant="compact">
-          <div>
-            {!listOfPages && (
-              <Button onClick={getListOfAccountPages}>Choose a pages</Button>
-            )}
-            {listOfPages && (
-              <Paper>
-                {listOfPages.map((page: any) => (
-                  <Box
-                    key={page.id}
-                    startAdornment={
-                      <Avatar
-                        variant="rounded"
-                        src={page.picture.data.url}
-                        alt={page.name}
-                      />
-                    }
-                    endAdornment={
-                      <Button
-                        onClick={() => {
-                          handleAddPost(page.id, page.access_token);
-                        }}
-                      >
-                        Add a post
-                      </Button>
-                    }
-                  >
-                    {page.name}
-                  </Box>
-                ))}
-              </Paper>
-            )}
-          </div>
-        </Container>
-      </Container>
-    </Layout>
+    <Container>
+      {!listOfPages && (
+        <Button onClick={getListOfAccountPages}>Choose a pages</Button>
+      )}
+      {listOfPages && (
+        <Paper>
+          {listOfPages.map((page: any) => (
+            <Box
+              key={page.id}
+              startAdornment={
+                <Avatar
+                  variant="rounded"
+                  src={page.picture.data.url}
+                  alt={page.name}
+                />
+              }
+              endAdornment={
+                <Button
+                  onClick={() => {
+                    handleAddPost(page.id, page.access_token);
+                  }}
+                >
+                  Add a post
+                </Button>
+              }
+            >
+              {page.name}
+            </Box>
+          ))}
+        </Paper>
+      )}
+    </Container>
   );
 };

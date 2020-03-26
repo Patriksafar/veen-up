@@ -5,11 +5,14 @@ import { cx } from "emotion";
 type Props = {
   children: ReactNode;
   color?: "transparent" | "contained";
+  variant?: "screen" | "container";
 };
 
-export const Layout = ({ children, color }: Props) => {
+export const Layout = ({ children, color, variant }: Props) => {
   const rootClasses = cx(classes.root, {
-    [classes.blackBackground]: color === "contained"
+    [classes.blackBackground]: color === "contained",
+    [classes.screeen]: variant === "screen",
+    [classes.container]: variant === "container"
   });
 
   return (

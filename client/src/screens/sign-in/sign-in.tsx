@@ -17,7 +17,7 @@ import {
 
 import * as classes from "./sign-in.styles";
 import { Layout } from "../../components/layout";
-import { Button, useStore, Link } from "../../components";
+import { Button, useStore, Link, Logo } from "../../components";
 
 import { routes } from "../../config";
 
@@ -49,6 +49,10 @@ export const SignIn = ({}: Props) => {
   };
 
   const handleSubmit = (event?: FormEvent) => {
+    if (!email && !password) {
+      return;
+    }
+
     setSubmitted(true);
     setLoading(true);
 
@@ -84,6 +88,7 @@ export const SignIn = ({}: Props) => {
   return (
     <Layout color="contained">
       <div className={classes.singupPaper}>
+        <Logo variant="medium" />
         <Paper background="white">
           <Typography variant="h6">Sign In</Typography>
           <Grid>
