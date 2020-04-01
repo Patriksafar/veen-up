@@ -1,34 +1,43 @@
 const mongoose = require("mongoose");
+const jwtDecode = require("jwt-decode");
 const UserSocialAccounts = require("../models/user-social-accounts");
 
 exports.createUserSocialAccounts = (request, response) => {
-  const google = request.body.google ? {
-    token: request.body.google.token,
-    name: request.body.google.name,
-    email: request.body.google.email,
-  } : {}
+  const decoded = jwtDecode(request.headers.authorization);
 
-  const instagram = request.body.instagram ? {
-    token: request.body.instagram.token,
-    name: request.body.instagram.name,
-    email: request.body.instagram.email,
-  } : {}
+  const google = request.body.google
+    ? {
+        token: request.body.google.token,
+        name: request.body.google.name,
+        email: request.body.google.email
+      }
+    : {};
 
-  const facebook = request.body.facebook ? {
-    token: request.body.facebook.token,
-    name: request.body.facebook.name,
-    email: request.body.facebook.email
-  } : {}
+  const instagram = request.body.instagram
+    ? {
+        token: request.body.instagram.token,
+        name: request.body.instagram.name,
+        email: request.body.instagram.email
+      }
+    : {};
+
+  const facebook = request.body.facebook
+    ? {
+        token: request.body.facebook.token,
+        name: request.body.facebook.name,
+        email: request.body.facebook.email
+      }
+    : {};
 
   const socialAccounts = new UserSocialAccounts({
     _id: new mongoose.Types.ObjectId(),
-    userId: request.body.userId,
+    userId: decoded.id,
     facebookAccount: facebook,
     instagramAccount: instagram,
     googleAccount: google
   });
 
-  console.log(socialAccounts)
+  console.log(socialAccounts);
 
   socialAccounts
     .save()
@@ -47,7 +56,8 @@ exports.createUserSocialAccounts = (request, response) => {
 };
 
 exports.getAccountsByUserId = (request, response) => {
-  const { userId } = request.params;
+  const decoded = jwtDecode(request.headers.authorization);
+  const userId = decoded.id;
 
   UserSocialAccounts.find({ userId })
     .exec()

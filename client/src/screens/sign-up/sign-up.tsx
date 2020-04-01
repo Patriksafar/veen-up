@@ -20,6 +20,7 @@ import { Layout } from "../../components/layout";
 import { Button, useStore, Link, Logo } from "../../components";
 
 import { routes } from "../../config";
+import { postData } from "../../utils";
 
 type Props = RouteComponentProps;
 
@@ -38,18 +39,6 @@ export const SignUp = ({}: Props) => {
   if (veenupToken) {
     return <Redirect to={routes.dashboard} noThrow />;
   }
-
-  const postData = async (url = "", data = {}) => {
-    // Default options are marked with *
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-    return await response.json();
-  };
 
   const handleSubmit = (event?: FormEvent) => {
     if (!email && !password) {

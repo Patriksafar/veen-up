@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
 
-var SocialAccountSchema = mongoose.Schema({
+const SocialAccountSchema = mongoose.Schema({
   token: {
-    type: String,
+    type: String
   },
   name: {
-    type: String,
+    type: String
   },
   email: {
-    type: String,
+    type: String
   }
 });
 
-const userSocialAccounts = mongoose.Schema({
+const userSocialAccountsSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   userId: String,
   facebookAccount: SocialAccountSchema,
@@ -20,4 +20,4 @@ const userSocialAccounts = mongoose.Schema({
   googleAccount: SocialAccountSchema
 });
 
-module.exports = mongoose.model("UserSocialAccounts", userSocialAccounts);
+module.exports = mongoose.model("UserSocialAccounts", userSocialAccountsSchema);

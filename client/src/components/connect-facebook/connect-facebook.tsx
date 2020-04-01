@@ -20,8 +20,6 @@ export const ConnectFacebook = ({}: Props) => {
     return <Redirect noThrow to={routes.signIn} />;
   }
 
-  console.log(parseJwt(veenupToken).id);
-
   if (fbUserData.isLoggedIn) {
     navigate(routes.list, { replace: true });
   }
