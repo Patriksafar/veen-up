@@ -2,9 +2,9 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
-const productRoutes = require("./api/routes/products");
 const userRoutes = require("./api/routes/user");
 const connectedAccountsRoutes = require("./api/routes/user-social-accounts");
+const socialPageRoutes = require("./api/routes/user-social-page");
 
 const { mongoConnect } = require("./config");
 
@@ -12,7 +12,7 @@ const app = express();
 
 mongoose.connect(mongoConnect, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 
 // loggign response status to console
@@ -38,9 +38,9 @@ app.use((req, res, next) => {
 });
 
 // route - endpoints definitions singup/signin and so on
-app.use("/products", productRoutes);
 app.use("/user", userRoutes);
 app.use("/connected-accounts", connectedAccountsRoutes);
+app.use("/social-page", socialPageRoutes);
 
 // error handaling of requests
 app.use((req, res, next) => {
@@ -53,8 +53,8 @@ app.use((error, req, res) => {
   res.status(error.status || 500);
   res.json({
     error: {
-      message: error.message
-    }
+      message: error.message,
+    },
   });
 });
 

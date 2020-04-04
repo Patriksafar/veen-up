@@ -17,7 +17,7 @@ export const App = () => {
         <SignIn path={routes.signIn} />
         <LayoutApp default>
           <Dashboard path={routes.dashboard} />
-          <ManageSocialMedia path={routes.manageAccounts} />
+          <ManageSocialMedia path={`${routes.manageAccounts}*`} />
           <FacebookPageList path={routes.list} />
         </LayoutApp>
         <Redirect to={routes.signIn} from="/" noThrow />

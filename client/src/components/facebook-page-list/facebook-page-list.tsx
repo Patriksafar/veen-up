@@ -11,16 +11,12 @@ import { Container } from "@material-ui/core";
 type Props = RouteComponentProps;
 
 export const FacebookPageList = ({}: Props) => {
-  const { listOfPages, setListOfPages, fbUserData } = useStore();
+  const { fbUserData } = useStore();
   const { veenupToken } = useStore();
 
   if (!veenupToken) {
     return <Redirect to={routes.signIn} noThrow />;
   }
-
-  // if (!fbUserData.isLoggedIn) {
-  //   return <Redirect to={routes.addFacebook} noThrow />;
-  // }
 
   const handleAddPost = (id: string, token: string) => {
     const pageId = id;
@@ -29,11 +25,11 @@ export const FacebookPageList = ({}: Props) => {
     fetch(pageTokenRequestUrl, {
       method: "POST",
       headers: {
-        "content-type": "application/x-www-form-urlencoded"
-      }
+        "content-type": "application/x-www-form-urlencoded",
+      },
     })
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         if (responseData.id) {
           alert("přidáno!!!");
         } else if (responseData.error.error_user_msg) {
@@ -43,47 +39,14 @@ export const FacebookPageList = ({}: Props) => {
   };
 
   const getListOfAccountPages = () => {
-    const pageTokenRequestUrl = `https://graph.facebook.com/${fbUserData?.fbUserId}/accounts?fields=access_token,picture,name&access_token=${fbUserData?.token}`;
+    const pageTokenRequestUrl = `https://graph.facebook.com/${fbUserData?.fbUserId}/accounts?fields=access_token,picture,name,link&access_token=${fbUserData?.token}`;
     fetch(pageTokenRequestUrl)
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         const { data } = responseData;
-        setListOfPages(data);
+        // setListOfPages(data);
       });
   };
 
-  return (
-    <Container>
-      {!listOfPages && (
-        <Button onClick={getListOfAccountPages}>Choose a pages</Button>
-      )}
-      {listOfPages && (
-        <Paper>
-          {listOfPages.map((page: any) => (
-            <Box
-              key={page.id}
-              startAdornment={
-                <Avatar
-                  variant="rounded"
-                  src={page.picture.data.url}
-                  alt={page.name}
-                />
-              }
-              endAdornment={
-                <Button
-                  onClick={() => {
-                    handleAddPost(page.id, page.access_token);
-                  }}
-                >
-                  Add a post
-                </Button>
-              }
-            >
-              {page.name}
-            </Box>
-          ))}
-        </Paper>
-      )}
-    </Container>
-  );
+  return <Container>Tada</Container>;
 };

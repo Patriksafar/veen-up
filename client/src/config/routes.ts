@@ -4,5 +4,7 @@ export const routes = {
   dashboard: "/dashboard/",
   addFacebook: "/add-facebook/",
   list: "/account-list/",
-  manageAccounts: "/manage-accounts/"
+  manageAccounts: "/manage-accounts/",
+  facebook: "/facebook/",
+  instagram: "/instagram/",
 };

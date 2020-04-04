@@ -18,8 +18,6 @@ type Props = {
 type API = {
   fbUserData: FacebookUserStateProps | null;
   setFbUserData: (s: FacebookUserStateProps) => void;
-  listOfPages: any;
-  setListOfPages: (s: any) => void;
   veenupToken: string | null;
   setVeenupToken: (s: string) => void;
   userId: string;
@@ -50,13 +48,10 @@ export const StoreProvider = ({ children }: Props) => {
   }, [veenupToken]);
 
   const userId = veenupToken && parseJwt(veenupToken).id;
-  console.log(veenupToken && parseJwt(veenupToken));
 
   const api: API = {
     fbUserData,
     setFbUserData,
-    listOfPages,
-    setListOfPages,
     veenupToken,
     setVeenupToken,
     userId,
