@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { Layout } from "../layout";
-import { RouteComponentProps, Redirect, navigate } from "@reach/router";
+import { RouteComponentProps, Redirect, navigate, Link } from "@reach/router";
 import { SideMenu } from "../menu";
 import {
   Drawer,
@@ -24,14 +24,18 @@ type Props = {
 
 const cookies = new Cookies();
 export const LayoutApp = ({ children }: Props) => {
-  const { setVeenupToken } = useStore();
+  const { setVeenupToken, veenupToken } = useStore();
+
+  if (!veenupToken) {
+    return <Redirect to={routes.signIn} noThrow />;
+  }
 
   // logout from app
   const handleLogOut = () => {
     cookies.remove("token");
     setVeenupToken("");
 
-    navigate(routes.signIn)
+    navigate(routes.signIn);
   };
 
   return (
@@ -47,6 +51,14 @@ export const LayoutApp = ({ children }: Props) => {
         >
           <Logo />
           <List>
+            <Link to={routes.dashboard}>
+              <ListItem key="Dashboard">
+                <ListItemIcon>
+                  <PowerSettingsNewRounded />
+                </ListItemIcon>
+                <ListItemText primary="Dashboard" />
+              </ListItem>
+            </Link>
             <ListItem button key="logout" onClick={handleLogOut}>
               <ListItemIcon>
                 <PowerSettingsNewRounded />

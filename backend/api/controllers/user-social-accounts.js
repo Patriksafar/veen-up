@@ -5,11 +5,11 @@ const UserSocialAccounts = require("../models/user-social-accounts");
 exports.createUserSocialAccounts = (request, response) => {
   const decoded = jwtDecode(request.headers.authorization);
 
-  const google = request.body.google
+  const twitter = request.body.twitter
     ? {
-        token: request.body.google.token,
-        name: request.body.google.name,
-        email: request.body.google.email
+        token: request.body.twitter.token,
+        name: request.body.twitter.name,
+        email: request.body.twitter.email
       }
     : {};
 
@@ -25,7 +25,9 @@ exports.createUserSocialAccounts = (request, response) => {
     ? {
         token: request.body.facebook.token,
         name: request.body.facebook.name,
-        email: request.body.facebook.email
+        email: request.body.facebook.email,
+        image: request.body.facebook.image,
+        accountUserId: request.body.facebook.accountUserId
       }
     : {};
 
@@ -34,7 +36,7 @@ exports.createUserSocialAccounts = (request, response) => {
     userId: decoded.id,
     facebookAccount: facebook,
     instagramAccount: instagram,
-    googleAccount: google
+    twitterAccount: twitter
   });
 
   console.log(socialAccounts);

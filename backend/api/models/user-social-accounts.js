@@ -9,6 +9,12 @@ const SocialAccountSchema = mongoose.Schema({
   },
   email: {
     type: String
+  },
+  image: {
+    type: String
+  },
+  accountUserId: {
+    type: String
   }
 });
 
@@ -17,7 +23,7 @@ const userSocialAccountsSchema = mongoose.Schema({
   userId: String,
   facebookAccount: SocialAccountSchema,
   instagramAccount: SocialAccountSchema,
-  googleAccount: SocialAccountSchema
+  twitterAccount: SocialAccountSchema
 });
 
 module.exports = mongoose.model("UserSocialAccounts", userSocialAccountsSchema);

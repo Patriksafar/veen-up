@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Container, Card, Grid } from "@material-ui/core";
 import { useStore } from "../../components";
 import { Redirect, RouteComponentProps } from "@reach/router";
@@ -12,9 +12,44 @@ import {
 } from "@material-ui/icons";
 import { LinkBox } from "../../components/link-box";
 import { Layout } from "../../components/layout";
+import { getData } from "../../utils";
 type Props = RouteComponentProps;
-export const Dashboard = ({ }: Props) => {
-  const { veenupToken } = useStore();
+export const Dashboard = ({}: Props) => {
+  const { veenupToken, fbUserData, setFbUserData } = useStore();
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    if (!fbUserData && veenupToken && !isLoading) {
+      getData("http://localhost:5000/connected-accounts", veenupToken).then(
+        response => {
+          setIsLoading(false);
+          if (
+            response.length > 0 &&
+            response[0] &&
+            response[0].facebookAccount
+          ) {
+            const {
+              token,
+              email,
+              name,
+              image,
+              accountUserId
+            } = response[0].facebookAccount;
+
+            setFbUserData({
+              email: email,
+              token: token,
+              name: name,
+              picture: image,
+              fbUserId: accountUserId
+            });
+          }
+        }
+      );
+    }
+  }, []);
+
   if (!veenupToken) {
     return <Redirect to={routes.signIn} noThrow />;
   }
@@ -25,7 +60,7 @@ export const Dashboard = ({ }: Props) => {
         <LinkBox
           to={routes.manageAccounts}
           title="Manage your Facebook"
-          subtitle="Connect you Facebook account"
+          subtitle={fbUserData?.name || "Connect you Facebook account"}
           icon="Facebook"
         />
         <LinkBox

@@ -10,6 +10,8 @@ import {
 } from "@material-ui/icons";
 import { Link } from "../link/link";
 
+import * as classes from "./link-box.styles";
+
 const iconsMapped = {
   Facebook: <Facebook color="primary" />,
   Twitter: <Twitter color="primary" />,
@@ -26,7 +28,7 @@ type Props = {
 
 export const LinkBox = ({ to, title, subtitle, xsWidth = 4, icon }: Props) => {
   return (
-    <Grid item xs={12} sm={4}>
+    <Grid item xs={12} sm={4} classes={{ root: classes.root }}>
       <Link to={to}>
         <Paper smallerPadding>
           <Grid container alignItems="center">

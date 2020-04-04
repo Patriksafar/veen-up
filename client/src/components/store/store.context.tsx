@@ -1,15 +1,14 @@
 import React, { createContext, useState, ReactNode, useEffect } from "react";
 
 import Cookies from "universal-cookie";
-import { parseJwt } from "../../utils";
+import { parseJwt, getData } from "../../utils";
 
 type FacebookUserStateProps = {
-  isLoggedIn: boolean;
-  userID?: string;
   name?: string;
   email?: string;
   picture?: string;
   token?: string;
+  fbUserId?: string;
 };
 
 type Props = {
@@ -17,13 +16,13 @@ type Props = {
 };
 
 type API = {
-  fbUserData: FacebookUserStateProps;
+  fbUserData: FacebookUserStateProps | null;
   setFbUserData: (s: FacebookUserStateProps) => void;
   listOfPages: any;
   setListOfPages: (s: any) => void;
   veenupToken: string | null;
   setVeenupToken: (s: string) => void;
-  userId: string
+  userId: string;
 };
 
 export const StoreContext = createContext<API | null>(null);
@@ -31,9 +30,9 @@ export const StoreContext = createContext<API | null>(null);
 const cookies = new Cookies();
 
 export const StoreProvider = ({ children }: Props) => {
-  const [fbUserData, setFbUserData] = useState<FacebookUserStateProps>({
-    isLoggedIn: false
-  });
+  const [fbUserData, setFbUserData] = useState<FacebookUserStateProps | null>(
+    null
+  );
   const [listOfPages, setListOfPages] = useState(null);
   const [veenupToken, setVeenupToken] = useState<string | null>(
     cookies.get("token")
@@ -41,11 +40,17 @@ export const StoreProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (!cookies.get("token") && veenupToken) {
-      cookies.set("token", veenupToken, { path: "/" });
+      const tokenExp = new Date(parseJwt(veenupToken).exp);
+      console.log(tokenExp);
+
+      cookies.set("token", veenupToken, {
+        path: "/",
+      });
     }
   }, [veenupToken]);
 
-  const userId = veenupToken && parseJwt(veenupToken).id
+  const userId = veenupToken && parseJwt(veenupToken).id;
+  console.log(veenupToken && parseJwt(veenupToken));
 
   const api: API = {
     fbUserData,
@@ -54,7 +59,7 @@ export const StoreProvider = ({ children }: Props) => {
     setListOfPages,
     veenupToken,
     setVeenupToken,
-    userId
+    userId,
   };
 
   return <StoreContext.Provider value={api}>{children}</StoreContext.Provider>;

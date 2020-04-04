@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  StoreProvider,
-  ConnectFacebook,
-  FacebookPageList,
-  LayoutApp
-} from "./components";
+import { StoreProvider, FacebookPageList, LayoutApp } from "./components";
 
 import { routes } from "./config/routes";
 import { Router, Redirect } from "@reach/router";
@@ -23,7 +18,6 @@ export const App = () => {
         <LayoutApp default>
           <Dashboard path={routes.dashboard} />
           <ManageSocialMedia path={routes.manageAccounts} />
-          <ConnectFacebook path={routes.addFacebook} />
           <FacebookPageList path={routes.list} />
         </LayoutApp>
         <Redirect to={routes.signIn} from="/" noThrow />

@@ -18,9 +18,9 @@ export const FacebookPageList = ({}: Props) => {
     return <Redirect to={routes.signIn} noThrow />;
   }
 
-  if (!fbUserData.isLoggedIn) {
-    return <Redirect to={routes.addFacebook} noThrow />;
-  }
+  // if (!fbUserData.isLoggedIn) {
+  //   return <Redirect to={routes.addFacebook} noThrow />;
+  // }
 
   const handleAddPost = (id: string, token: string) => {
     const pageId = id;
@@ -43,15 +43,13 @@ export const FacebookPageList = ({}: Props) => {
   };
 
   const getListOfAccountPages = () => {
-    if (fbUserData.isLoggedIn) {
-      const pageTokenRequestUrl = `https://graph.facebook.com/${fbUserData.userID}/accounts?fields=access_token,picture,name&access_token=${fbUserData.token}`;
-      fetch(pageTokenRequestUrl)
-        .then(response => response.json())
-        .then(responseData => {
-          const { data } = responseData;
-          setListOfPages(data);
-        });
-    }
+    const pageTokenRequestUrl = `https://graph.facebook.com/${fbUserData?.fbUserId}/accounts?fields=access_token,picture,name&access_token=${fbUserData?.token}`;
+    fetch(pageTokenRequestUrl)
+      .then(response => response.json())
+      .then(responseData => {
+        const { data } = responseData;
+        setListOfPages(data);
+      });
   };
 
   return (
