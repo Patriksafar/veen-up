@@ -15,7 +15,7 @@ exports.addUserSocialPages = (req, res) => {
     const userSocialPage = new UserSocialPage({
       _id: new mongoose.Types.ObjectId(),
       userId,
-      enum: enumType,
+      type: enumType,
       name,
       token,
       image,
@@ -55,6 +55,7 @@ exports.getSocialPageByUserId = (req, res) => {
   UserSocialPage.find({ userId: decoded.id })
     .then((docs) => {
       if (docs) {
+        console.log("from server: ", docs);
         res.status(200).json(docs);
       } else {
         res.status(404).json({

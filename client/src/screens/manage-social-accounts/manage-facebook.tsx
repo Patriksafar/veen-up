@@ -65,37 +65,46 @@ export const ManageFacebook = ({}: Props) => {
     const { accessToken, name, email, picture, id } = response;
 
     if (accessToken && name && email && veenupToken) {
-      postData(
-        "http://localhost:5000/connected-accounts",
-        {
-          facebook: {
-            token: accessToken,
-            name: name,
-            email: email,
-            image: picture.data.url,
-            accountUserId: id,
-          },
-        },
-        veenupToken
+      fetch(
+        `https://graph.facebook.com/v6.0/oauth/access_token?grant_type=fb_exchange_token&client_id=1699457083617896&client_secret=86b849bbeb31d3d04a579433bb3e7746&fb_exchange_token=${accessToken}`
       )
-        .then((response) => {
-          const {
-            token,
-            email,
-            name,
-            image,
-            accountUserId,
-          } = response.connectedSocialAccounts.facebookAccount;
+        .then((response) => response.json())
+        .then((responseData) => {
+          //send it to database
+          postData(
+            "http://localhost:5000/connected-accounts",
+            {
+              facebook: {
+                token: responseData.access_token,
+                name: name,
+                email: email,
+                image: picture.data.url,
+                enumType: "Facebook",
+                accountUserId: id,
+              },
+            },
+            veenupToken
+          )
+            .then((response) => {
+              const {
+                token,
+                email,
+                name,
+                image,
+                accountUserId,
+              } = response.connectedSocialAccounts.facebookAccount;
 
-          setFbUserData({
-            email: email,
-            token: token,
-            name: name,
-            picture: image,
-            fbUserId: accountUserId,
-          });
-        })
-        .catch();
+              // on success set state
+              setFbUserData({
+                email: email,
+                token: token,
+                name: name,
+                picture: image,
+                fbUserId: accountUserId,
+              });
+            })
+            .catch();
+        });
     }
   };
 

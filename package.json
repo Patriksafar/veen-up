@@ -25,6 +25,7 @@
     "jwt-decode": "^2.2.0",
     "mongoose": "^5.9.4",
     "morgan": "^1.9.1",
+    "node-fetch": "^2.6.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-facebook-login": "^4.1.1",

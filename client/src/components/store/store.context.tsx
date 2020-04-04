@@ -18,7 +18,7 @@ type Props = {
 type API = {
   fbUserData: FacebookUserStateProps | null;
   setFbUserData: (s: FacebookUserStateProps) => void;
-  veenupToken: string | null;
+  veenupToken: string;
   setVeenupToken: (s: string) => void;
   userId: string;
 };
@@ -31,21 +31,24 @@ export const StoreProvider = ({ children }: Props) => {
   const [fbUserData, setFbUserData] = useState<FacebookUserStateProps | null>(
     null
   );
-  const [listOfPages, setListOfPages] = useState(null);
-  const [veenupToken, setVeenupToken] = useState<string | null>(
-    cookies.get("token")
-  );
+  const [veenupToken, setVeenupToken] = useState<string>(cookies.get("token"));
 
   useEffect(() => {
     if (!cookies.get("token") && veenupToken) {
-      const tokenExp = new Date(parseJwt(veenupToken).exp);
-      console.log(tokenExp);
+      const tokenExp = new Date(parseJwt(veenupToken).exp * 1000);
 
       cookies.set("token", veenupToken, {
         path: "/",
+        expires: tokenExp,
       });
     }
   }, [veenupToken]);
+
+  const handleCookieChange = (name: any, value: any) => {
+    console.log(name, value);
+  };
+
+  cookies.addChangeListener(() => handleCookieChange);
 
   const userId = veenupToken && parseJwt(veenupToken).id;
 
