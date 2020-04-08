@@ -18,11 +18,12 @@ export const ManageFacebookPages = () => {
   useEffect(() => {
     if (!listOfConnectedPages)
       // need to compare pages on DB with pages from facebook stored in listOfPages
-      getData("http://localhost:5000/social-page/me", veenupToken).then(
-        (response) => {
-          setListOfConnectedPages(response);
-        }
-      );
+      getData(
+        "http://localhost:5000/social-page/me?type=Facebook",
+        veenupToken
+      ).then((response) => {
+        setListOfConnectedPages(response);
+      });
   });
 
   useEffect(() => {
