@@ -52,7 +52,15 @@ exports.addUserSocialPages = (req, res) => {
 // get pages of signed user
 exports.getSocialPageByUserId = (req, res) => {
   const decoded = jwtDecode(req.headers.authorization);
-  UserSocialPage.find({ userId: decoded.id })
+  const query = {
+    userId: decoded.id,
+  };
+
+  if (req.query.type) {
+    query.type = req.query.type;
+  }
+
+  UserSocialPage.find(query)
     .then((docs) => {
       if (docs) {
         console.log("from server: ", docs);

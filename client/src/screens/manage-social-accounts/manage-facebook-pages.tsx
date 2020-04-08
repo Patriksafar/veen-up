@@ -74,6 +74,7 @@ export const ManageFacebookPages = () => {
     }
   };
 
+  // this logic can be moved to BE and compare it with list of connected pages there
   // this will load list of users pages where he can admin
   const handleAddPagesButton = () => {
     const pageTokenRequestUrl = `https://graph.facebook.com/${fbUserData?.fbUserId}/accounts?fields=access_token,picture,name,link&access_token=${fbUserData?.token}`;
