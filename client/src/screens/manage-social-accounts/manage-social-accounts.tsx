@@ -13,7 +13,7 @@ export const ManageSocialMedia = ({}: Props) => {
   return (
     <Container>
       <Typography variant="h6" gutterBottom>
-        Add your social accounts
+        Manage your social accounts
       </Typography>
       <Router>
         <ManageFacebook default path={routes.facebook} />

@@ -10,6 +10,14 @@ router.post("/new", checkAuth, UserSocialPageController.addUserSocialPages);
 // get pages of user
 router.get("/me", checkAuth, UserSocialPageController.getSocialPageByUserId);
 
-router.get("/:pageId", checkAuth, UserSocialPageController.getSocialPageById);
+router.get(
+  "/facebook",
+  checkAuth,
+  UserSocialPageController.getNotConnectedFacebookPages
+);
+
+router.get("/:pageId/", checkAuth, UserSocialPageController.getSocialPageById);
+
+router.delete("/:pageId", checkAuth, UserSocialPageController.pageDeleteById);
 
 module.exports = router;

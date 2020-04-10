@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Paper } from "../../components/paper";
-import { Box, Button, useStore } from "../../components";
+import { Box, Button, useStore, Modal } from "../../components";
 import { Avatar } from "../../components/avatar";
 import { Redirect } from "@reach/router";
 import { routes } from "../../config";
-import { postData, getData } from "../../utils";
-import { Typography } from "@material-ui/core";
+import { postData, getData, deleteData } from "../../utils";
+import { Typography, Backdrop, Fade, Grid } from "@material-ui/core";
 
 export const ManageFacebookPages = () => {
-  const { fbUserData, veenupToken } = useStore();
+  const { veenupToken, fbUserData } = useStore();
   const [listOfFacebookPages, setListOfFacebookPages] = useState<[] | null>(
     null
   );
   const [listOfConnectedPages, setListOfConnectedPages] = useState<any>(null);
-  const [availablePages, setAvailablePages] = useState<any>(null);
+  const [openModal, setOpenModal] = useState(false);
+
+  const updateAvailablePages = () => {
+    const pageTokenRequestUrl = `http://localhost:5000/social-page/facebook`;
+    getData(pageTokenRequestUrl, veenupToken).then((responseData) => {
+      console.log(responseData);
+      const { notConnected } = responseData;
+      setListOfFacebookPages(notConnected);
+    });
+  };
 
   useEffect(() => {
     if (!listOfConnectedPages)
@@ -26,31 +35,6 @@ export const ManageFacebookPages = () => {
       });
   });
 
-  useEffect(() => {
-    const array: any = [];
-    if (!listOfFacebookPages) {
-      return;
-    }
-
-    listOfFacebookPages.map((facebookPage: any, index: number) => {
-      const shouldBeRendered =
-        listOfConnectedPages &&
-        listOfConnectedPages
-          .map((e: Record<string, string>) => {
-            return e.name;
-          })
-          .indexOf(facebookPage.name);
-
-      if (shouldBeRendered === -1) {
-        array.push(facebookPage);
-      } else {
-        return;
-      }
-    });
-
-    setAvailablePages(array);
-  }, [listOfConnectedPages, listOfFacebookPages]);
-
   const handleLinkPageClick = (page: any) => {
     const { access_token, picture, name } = page;
     if (access_token && picture && name) {
@@ -62,9 +46,9 @@ export const ManageFacebookPages = () => {
       };
       postData("http://localhost:5000/social-page/new", payload, veenupToken)
         .then((response) => {
-          if (response.page && listOfConnectedPages) {
+          updateAvailablePages();
+          if (response.page) {
             const newPage = response.page;
-
             setListOfConnectedPages((prevState: any) => [
               ...prevState,
               newPage,
@@ -78,47 +62,49 @@ export const ManageFacebookPages = () => {
   // this logic can be moved to BE and compare it with list of connected pages there
   // this will load list of users pages where he can admin
   const handleAddPagesButton = () => {
-    const pageTokenRequestUrl = `https://graph.facebook.com/${fbUserData?.fbUserId}/accounts?fields=access_token,picture,name,link&access_token=${fbUserData?.token}`;
-    fetch(pageTokenRequestUrl)
-      .then((response) => response.json())
-      .then((responseData) => {
-        const { data } = responseData;
-        setListOfFacebookPages(data);
+    setOpenModal(true);
+    updateAvailablePages();
+  };
+
+  const removePage = (page: any) => {
+    deleteData(`http://localhost:5000/social-page/${page._id}`, veenupToken)
+      .then((response) => {
+        setListOfConnectedPages(response.pages);
+      })
+      .catch((error) => {
+        throw new Error(error);
       });
   };
 
   return (
-    <div>
-      <Button onClick={handleAddPagesButton}>Add Facebook page</Button>
-      {listOfConnectedPages && listOfConnectedPages.length > 0 && (
-        <Paper>
-          Those are connected:
-          {listOfConnectedPages.map((page: any) => (
+    <Grid container spacing={3}>
+      {fbUserData && (
+        <Grid item xs={12} lg={6}>
+          <Paper smallerPadding>
+            <Typography variant="subtitle2" gutterBottom>
+              Connected Facebook accounts
+            </Typography>
             <Box
-              key={page._id}
-              startAdornment={
-                <Avatar variant="rounded" src={page.image} alt={page.name} />
-              }
-              endAdornment={
-                <Button
-                  onClick={() => {
-                    handleLinkPageClick(page);
-                  }}
-                >
-                  Connected
-                </Button>
-              }
+              startAdornment={<Avatar src={fbUserData.picture || ""}></Avatar>}
             >
-              {page.name}
+              <Typography variant="body1">{fbUserData.name}</Typography>
             </Box>
-          ))}
-        </Paper>
+          </Paper>
+        </Grid>
       )}
 
-      {availablePages && (
-        <Paper>
-          {availablePages.length > 0 ? (
-            availablePages.map((facebookPage: any) => {
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+      >
+        <div>
+          <Typography variant="h6" gutterBottom>
+            Connect pages to VeenUp
+          </Typography>
+          {listOfFacebookPages && listOfFacebookPages.length > 0 ? (
+            listOfFacebookPages.map((facebookPage: any) => {
               return (
                 <Box
                   key={facebookPage.id}
@@ -131,23 +117,76 @@ export const ManageFacebookPages = () => {
                   }
                   endAdornment={
                     <Button
+                      smallerPadding
                       onClick={() => {
                         handleLinkPageClick(facebookPage);
                       }}
                     >
-                      Link it
+                      Connect
                     </Button>
                   }
                 >
-                  {facebookPage.name}
+                  <Typography variant="body1">{facebookPage.name}</Typography>
                 </Box>
               );
             })
           ) : (
-            <Typography>No more pages to connect</Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              No more pages to connect
+            </Typography>
+          )}
+        </div>
+      </Modal>
+
+      <Grid item xs={12} lg={6}>
+        <Paper smallerPadding>
+          <Box
+            startAdornment={
+              <Typography variant="subtitle2" gutterBottom>
+                Connected pages:
+              </Typography>
+            }
+            endAdornment={
+              <Button onClick={handleAddPagesButton} smallerPadding>
+                Add
+              </Button>
+            }
+          ></Box>
+          {listOfConnectedPages && listOfConnectedPages.length > 0 ? (
+            <div>
+              {listOfConnectedPages.map((page: any) => (
+                <Box
+                  key={page._id}
+                  startAdornment={
+                    <Avatar
+                      variant="rounded"
+                      src={page.image}
+                      alt={page.name}
+                    />
+                  }
+                  endAdornment={
+                    <Button
+                      smallerPadding
+                      color="secondary"
+                      onClick={() => {
+                        removePage(page);
+                      }}
+                    >
+                      Remove
+                    </Button>
+                  }
+                >
+                  <Typography variant="body1">{page.name}</Typography>
+                </Box>
+              ))}
+            </div>
+          ) : (
+            <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+              There are no connected pages yet
+            </Typography>
           )}
         </Paper>
-      )}
-    </div>
+      </Grid>
+    </Grid>
   );
 };

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, useStore, Box } from "../../components";
+import { useStore, Box } from "../../components";
 import {
-  Container,
   Typography,
   Grid,
   Card,
   Paper,
-  Avatar,
   CircularProgress,
 } from "@material-ui/core";
 import { RouteComponentProps } from "@reach/router";
@@ -116,20 +114,13 @@ export const ManageFacebook = ({}: Props) => {
     if (fbUserData) {
       return (
         <div>
-          <Paper>
-            <Avatar src={fbUserData.picture}></Avatar>
-            <Typography>{fbUserData.name}</Typography>
-          </Paper>
           <ManageFacebookPages />
         </div>
       );
     }
 
     return (
-      <div>
-        <Typography variant="body1" gutterBottom>
-          Add Facebook account
-        </Typography>
+      <Grid item xs={12} lg={6}>
         <Card>
           <Paper>
             <Box
@@ -150,13 +141,13 @@ export const ManageFacebook = ({}: Props) => {
               }
             >
               <FacebookIcon />
-              <Typography>
+              <Typography variant="body2">
                 You have not connected your facebook account yet
               </Typography>
             </Box>
           </Paper>
         </Card>
-      </div>
+      </Grid>
     );
   };
 

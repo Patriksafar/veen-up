@@ -9,7 +9,7 @@ exports.createUserSocialAccounts = (request, response) => {
     ? {
         token: request.body.twitter.token,
         name: request.body.twitter.name,
-        email: request.body.twitter.email
+        email: request.body.twitter.email,
       }
     : {};
 
@@ -17,7 +17,7 @@ exports.createUserSocialAccounts = (request, response) => {
     ? {
         token: request.body.instagram.token,
         name: request.body.instagram.name,
-        email: request.body.instagram.email
+        email: request.body.instagram.email,
       }
     : {};
 
@@ -27,7 +27,7 @@ exports.createUserSocialAccounts = (request, response) => {
         name: request.body.facebook.name,
         email: request.body.facebook.email,
         image: request.body.facebook.image,
-        accountUserId: request.body.facebook.accountUserId
+        accountUserId: request.body.facebook.accountUserId,
       }
     : {};
 
@@ -36,23 +36,23 @@ exports.createUserSocialAccounts = (request, response) => {
     userId: decoded.id,
     facebookAccount: facebook,
     instagramAccount: instagram,
-    twitterAccount: twitter
+    twitterAccount: twitter,
   });
 
   console.log(socialAccounts);
 
   socialAccounts
     .save()
-    .then(result => {
+    .then((result) => {
       console.log(result);
       response.status(201).json({
         message: "hanldling POST request /social accounts/",
-        connectedSocialAccounts: socialAccounts
+        connectedSocialAccounts: socialAccounts,
       });
     })
-    .catch(err => {
+    .catch((err) => {
       response.status(500).json({
-        error: err
+        error: err,
       });
     });
 };
@@ -63,17 +63,17 @@ exports.getAccountsByUserId = (request, response) => {
 
   UserSocialAccounts.find({ userId })
     .exec()
-    .then(doc => {
+    .then((doc) => {
       console.log("From server", doc);
       if (doc) {
         response.status(200).json(doc);
       } else {
         response.status(404).json({
-          message: "No results found for provided `id`"
+          message: "No results found for provided `id`",
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       response.status(500).json({ error: err });
     });

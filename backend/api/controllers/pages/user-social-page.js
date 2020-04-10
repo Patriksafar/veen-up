@@ -2,8 +2,9 @@
 /* eslint-disable implicit-arrow-linebreak */
 const mongoose = require("mongoose");
 const jwtDecode = require("jwt-decode");
-
+const axios = require("axios");
 const UserSocialPage = require("../../models/user-social-page");
+const UserSocialAccounts = require("../../models/user-social-accounts");
 
 exports.addUserSocialPages = (req, res) => {
   const decoded = jwtDecode(req.headers.authorization);
@@ -94,5 +95,82 @@ exports.getSocialPageById = (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({ error: err });
+    });
+};
+
+exports.getNotConnectedFacebookPages = (req, res) => {
+  const decoded = jwtDecode(req.headers.authorization);
+
+  // get user access token and id from DB
+  UserSocialAccounts.find({ userId: decoded.id }).then((accounts) => {
+    if (accounts[0].facebookAccount) {
+      const { token, accountUserId } = accounts[0].facebookAccount;
+      axios
+        .get(
+          `https://graph.facebook.com/${accountUserId}/accounts?fields=access_token,picture,name,link&access_token=${token}`
+        )
+        .then((response) => {
+          const userFacebookPages = response.data.data;
+
+          // get list of allready connected facebook pages
+          UserSocialPage.find({ userId: decoded.id, type: "Facebook" })
+            .then((docs) => {
+              const allreadyConnected = docs;
+              const notConnected = [];
+
+              userFacebookPages.map((facebookPage, index) => {
+                const shouldBeRendered =
+                  allreadyConnected &&
+                  allreadyConnected
+                    .map((e) => e.name)
+                    .indexOf(facebookPage.name);
+
+                if (shouldBeRendered === -1) {
+                  notConnected.push(facebookPage);
+                }
+              });
+
+              res.status(200).json({
+                token,
+                accountUserId,
+                connected: allreadyConnected,
+                notConnected,
+              });
+            })
+            .catch((err) => {
+              res.status(404).json({
+                error: err,
+              });
+            });
+        })
+        .catch((error) => {
+          res.status(404).json({ error });
+        });
+    } else {
+      res
+        .status(200)
+        .json({ error: "You don't have any facebook account connected yet" });
+    }
+  });
+};
+
+exports.pageDeleteById = (req, res) => {
+  const decoded = jwtDecode(req.headers.authorization);
+  const userId = decoded.id;
+
+  UserSocialPage.findOneAndRemove({ _id: req.params.pageId })
+    .then(() => {
+      UserSocialPage.find({ userId })
+        .then((docs) => {
+          res.status(200).json({
+            message: "Page has been unconnected",
+            pages: docs,
+          });
+        })
+        .catch((error) => res.status(500).json({ error }));
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ error });
     });
 };

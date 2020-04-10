@@ -6,3 +6,4 @@ export * from "./link";
 export * from "./button";
 export * from "./box";
 export * from "./menu";
+export * from "./modal";
